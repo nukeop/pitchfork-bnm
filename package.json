@@ -1,6 +1,6 @@
 {
   "name": "pitchfork-bnm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pitchfork.com scraper that gets best new music info Edit",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "pitchfork",
     "music",
-    "scaraper"
+    "scraper"
   ],
   "author": "nukeop",
   "license": "AGPL-3.0",
