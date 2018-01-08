@@ -8,6 +8,7 @@ test('fetch best new albums', t => {
       t.pass();
     })
     .catch((err) => {
+      console.error(err);
       t.fail();
     });
 });
@@ -18,6 +19,18 @@ test('fetch best new tracks', t => {
       t.pass();
     })
     .catch((err) => {
+      console.error(err);
       t.fail();
     });
 });
+
+test('fetch best new reissues', t=> {
+  return p4k.getBestNewReissues()
+    .then((reissues) => {
+      t.pass();
+    })
+    .catch((err) => {
+      console.error(err);
+      t.fail();
+    });
+})
