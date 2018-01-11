@@ -6,7 +6,9 @@ function getReviewDetails(reviewUrl) {
   return fetch(reviewUrl)
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html);
+      var $ = cheerio.load(html,{
+	decodeEntities: false
+      });
       var details = {};
 
       details.score = $('.score').text();
@@ -23,7 +25,9 @@ function getTrackReviewDetails(reviewUrl) {
   return fetch(reviewUrl)
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html);
+      var $ = cheerio.load(html, {
+	decodeEntities: false
+      });
       var details = {};
 
       details.review = $('.review-copy>.contents').text();
@@ -37,7 +41,9 @@ function getTrackReviewDetails(reviewUrl) {
 function processAlbumList(albums) {
   albums = albums.map((i, el) => {
     var album = {};
-    var el$ = cheerio.load(el);
+    var el$ = cheerio.load(el, {
+      decodeEntities: false
+    });
     album.thumbnail = el$('div.artwork>img').attr('src');
     album.artist = el$('ul.artist-list').text();
     album.title = el$('h2.title').html();
@@ -59,7 +65,9 @@ function getBestNewAlbums() {
   return fetch(p4kUrl + '/best/')
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html);
+      var $ = cheerio.load(html, {
+	decodeEntities: false
+      });
       var albums = $('#best-new-albums>div>ul').find('li>div.album-small');
       return processAlbumList(albums);
     })
@@ -72,12 +80,16 @@ function getBestNewTracks() {
   return fetch(p4kUrl + '/best/')
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html);
+      var $ = cheerio.load(html, {
+	decodeEntities: false
+      });
       var tracks = $('#best-new-tracks>div>ul').find('li>div.track-small');
 
       tracks = tracks.map((i, el) => {
 	var track = {};
-	var el$ = cheerio.load(el);
+	var el$ = cheerio.load(el, {
+	  decodeEntities: false
+	});
 	track.thumbnail = el$('div.artwork>img').attr('src');
 	track.artist = el$('ul.artist-list').text();
 	track.title = el$('h2.title').html();
@@ -102,7 +114,9 @@ function getBestNewReissues() {
   return fetch(p4kUrl + '/best/')
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html);
+      var $ = cheerio.load(html, {
+	decodeEntities: false
+      });
       var albums = $('#best-new-reissues>div>ul').find('li>div.album-small');
       return processAlbumList(albums);      
     })
