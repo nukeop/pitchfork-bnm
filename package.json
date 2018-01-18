@@ -1,6 +1,6 @@
 {
   "name": "pitchfork-bnm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Pitchfork.com scraper that gets best new music info Edit",
   "main": "index.js",
   "scripts": {

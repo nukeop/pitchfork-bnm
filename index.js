@@ -12,7 +12,7 @@ function getReviewDetails(reviewUrl) {
       var details = {};
 
       details.score = $('.score').text();
-      details.abstract = $('.abstract>p').text();
+      details.abstract = $('.review-detail__abstract>p').text();
       details.review = $('.contents.dropcap').text();
       return details;
     })
