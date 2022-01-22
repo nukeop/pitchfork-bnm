@@ -46,7 +46,7 @@ function processAlbumList(albums) {
     });
     album.thumbnail = el$('div.artwork>img').attr('src');
     album.artist = el$('ul.artist-list').text();
-    album.title = el$('h2.title').html();
+    album.title = el$('h2.title>em').html();
     album.reviewUrl = p4kUrl + el$('a').attr('href');
     album.genres = el$('ul.genre-list').find('li>a').toArray().map((el, i) => { return el.children[0].data; });
 
@@ -92,7 +92,7 @@ function getBestNewTracks() {
 	});
 	track.thumbnail = el$('div.artwork>img').attr('src');
 	track.artist = el$('ul.artist-list').text();
-	track.title = el$('h2.title').html();
+	track.title = el$('h2.title>em').html();
 	track.reviewUrl = p4kUrl + el$('a').attr('href');
 
 	return track;
