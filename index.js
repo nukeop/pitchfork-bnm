@@ -3,17 +3,20 @@ const cheerio = require('cheerio');
 const p4kUrl = 'http://pitchfork.com';
 
 function getReviewDetails(reviewUrl) {
+  console.log(reviewUrl)
   return fetch(reviewUrl)
     .then(response => response.text())
     .then(html => {
-      var $ = cheerio.load(html,{
-	decodeEntities: false
+      var $ = cheerio.load(html, {
+        decodeEntities: false
       });
       var details = {};
 
-      details.score = $('.score').text();
-      details.abstract = $('.review-detail__abstract>p').text();
-      details.review = $('.contents.dropcap').text();
+      details.score = $('header>div>div:nth-child(2)>div>div:nth-child(2)>div>div>p').text();
+      details.abstract = $('header>div:nth-child(4)').text();
+      const reviews = $('.body__inner-container>p');
+      reviews.splice(-3);
+      details.review = reviews.text()
       return details;
     })
     .catch((err) => {
@@ -26,11 +29,11 @@ function getTrackReviewDetails(reviewUrl) {
     .then(response => response.text())
     .then(html => {
       var $ = cheerio.load(html, {
-	decodeEntities: false
+        decodeEntities: false
       });
       var details = {};
 
-      details.review = $('.review-copy>.contents').text();
+      details.review = $('.body__inner-container>p').text()
       return details;
     })
     .catch((err) => {
@@ -56,7 +59,7 @@ function processAlbumList(albums) {
   return Promise.all(Array.from(albums.map((i, album) => {
     return getReviewDetails(album.reviewUrl)
       .then(details => {
-      	return Promise.resolve(Object.assign({}, album, details));
+        return Promise.resolve(Object.assign({}, album, details));
       });
   })));
 }
@@ -66,14 +69,14 @@ function getBestNewAlbums() {
     .then(response => response.text())
     .then(html => {
       var $ = cheerio.load(html, {
-	decodeEntities: false
+        decodeEntities: false
       });
       var albums = $('#best-new-albums>div>ul').find('li>div.album-small');
       return processAlbumList(albums);
     })
     .catch((err) => {
       console.error(err);
-    }); 
+    });
 }
 
 function getBestNewTracks() {
@@ -81,28 +84,28 @@ function getBestNewTracks() {
     .then(response => response.text())
     .then(html => {
       var $ = cheerio.load(html, {
-	decodeEntities: false
+        decodeEntities: false
       });
       var tracks = $('#best-new-tracks>div>ul').find('li>div.track-small');
 
       tracks = tracks.map((i, el) => {
-	var track = {};
-	var el$ = cheerio.load(el, {
-	  decodeEntities: false
-	});
-	track.thumbnail = el$('div.artwork>img').attr('src');
-	track.artist = el$('ul.artist-list').text();
-	track.title = el$('h2.title>em').html();
-	track.reviewUrl = p4kUrl + el$('a').attr('href');
+        var track = {};
+        var el$ = cheerio.load(el, {
+          decodeEntities: false
+        });
+        track.thumbnail = el$('div.artwork>img').attr('src');
+        track.artist = el$('ul.artist-list').text();
+        track.title = el$('h2.title').html();
+        track.reviewUrl = p4kUrl + el$('a').attr('href');
 
-	return track;
+        return track;
       });
 
       return Promise.all(Array.from(tracks.map((i, track) => {
-      	return getTrackReviewDetails(track.reviewUrl)
-      	  .then(details => {
-      	    return Promise.resolve(Object.assign({}, track, details));
-      	  });
+        return getTrackReviewDetails(track.reviewUrl)
+          .then(details => {
+            return Promise.resolve(Object.assign({}, track, details));
+          });
       })));
     })
     .catch((err) => {
@@ -115,10 +118,10 @@ function getBestNewReissues() {
     .then(response => response.text())
     .then(html => {
       var $ = cheerio.load(html, {
-	decodeEntities: false
+        decodeEntities: false
       });
       var albums = $('#best-new-reissues>div>ul').find('li>div.album-small');
-      return processAlbumList(albums);      
+      return processAlbumList(albums);
     })
     .catch((err) => {
       console.error(err);
