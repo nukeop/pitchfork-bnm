@@ -79,6 +79,25 @@ function getBestNewAlbums() {
     });
 }
 
+// Sanitizes the track from pitchfork to remove extraneous quotations
+function sanitizeBestNewTracks(title) { 
+  if(title.length >= 2) { 
+    // Check for first quotation
+    let firstLetter = title[0];
+    let titleLength = (title).length;
+    let lastLetter = title[titleLength - 1];
+    if(firstLetter === "“") { 
+      // Check for last quotation
+      if(lastLetter === "”") { 
+        // Sanitize the title 
+        title = (title).slice(1);
+        title = (title).slice(0, (title).length - 1);
+      }
+    }
+  }
+  return title;
+}
+
 function getBestNewTracks() {
   return fetch(p4kUrl + '/best/')
     .then(response => response.text())
@@ -96,6 +115,7 @@ function getBestNewTracks() {
         track.thumbnail = el$('div.artwork>img').attr('src');
         track.artist = el$('ul.artist-list').text();
         track.title = el$('h2.title').html();
+        track.title = sanitizeBestNewTracks(track.title);
         track.reviewUrl = p4kUrl + el$('a').attr('href');
 
         return track;
@@ -131,5 +151,6 @@ function getBestNewReissues() {
 module.exports = {
   getBestNewAlbums,
   getBestNewTracks,
-  getBestNewReissues
+  getBestNewReissues,
+  sanitizeBestNewTracks
 };

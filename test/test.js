@@ -25,6 +25,30 @@ test('fetch best new tracks', t => {
     });
 });
 
+test('sanitizing title with quotations', t => {
+  // Test title with extraneous quotations
+  let title = "“Hello”";
+  let titleTest = p4k.sanitizeBestNewTracks(title);
+  if(titleTest === "Hello") { 
+    t.pass();
+  }
+  else {
+    t.fail();
+  }
+})
+
+test('sanitizing title without quotations', t => {
+  // Test title without extraneous quotations
+  let title = "Hello";
+  let titleTest = p4k.sanitizeBestNewTracks(title);
+  if(titleTest === "Hello") { 
+    t.pass();
+  }
+  else {
+    t.fail();
+  }
+})
+
 test('fetch best new reissues', t=> {
   return p4k.getBestNewReissues()
     .then((reissues) => {
