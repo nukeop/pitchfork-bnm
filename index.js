@@ -3,7 +3,6 @@ const cheerio = require('cheerio');
 const p4kUrl = 'http://pitchfork.com';
 
 function getReviewDetails(reviewUrl) {
-  console.log(reviewUrl)
   return fetch(reviewUrl)
     .then(response => response.text())
     .then(html => {
@@ -80,15 +79,15 @@ function getBestNewAlbums() {
 }
 
 // Sanitizes the track from pitchfork to remove extraneous quotations
-function sanitizeBestNewTracks(title) { 
-  if(title.length >= 2) { 
+function sanitizeBestNewTracks(title) {
+  if (title.length >= 2) {
     // Check for first quotation
     let firstLetter = title[0];
     let titleLength = (title).length;
     let lastLetter = title[titleLength - 1];
-    if(firstLetter === "“") { 
+    if (firstLetter === "“") {
       // Check for last quotation
-      if(lastLetter === "”") { 
+      if (lastLetter === "”") {
         // Sanitize the title 
         title = (title).slice(1);
         title = (title).slice(0, (title).length - 1);
